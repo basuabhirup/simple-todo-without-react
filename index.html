@@ -1,117 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Todo App</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      .completed {
-        text-decoration: line-through;
-        color: gray;
-      }
-      .todo-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .todo-title {
-        flex-grow: 1;
-        margin-right: 15px;
-      }
-    </style>
-  </head>
-  <body class="container my-5">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Todo App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/styles.css" rel="stylesheet" />
+</head>
+
+<body class="container my-5">
+  <div class="container">
     <h1 class="mb-4">Todo List</h1>
     <div class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Enter a new task" />
       <button class="btn btn-primary" onclick="addTodo()">Add Todo</button>
     </div>
     <div class="list-group todos"></div>
+  </div>
 
-    <script>
-      let todos = [];
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="editTaskInput" class="form-control" placeholder="Edit your task" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveEditTodo()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      function addTodo() {
-        const todoTitle = document.querySelector("input").value;
-        if (todoTitle.trim() !== "") {
-          todos.push({
-            id: todos.length + 1,
-            title: todoTitle,
-            completed: false,
-          });
-          render();
-          document.querySelector("input").value = "";
-        }
-      }
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-      function deleteTodo(id) {
-        todos = todos.filter((todo) => todo.id !== Number(id));
-        render();
-      }
+  <!-- Custom JS -->
+  <script src="/scripts.js"></script>
+</body>
 
-      function toggleComplete(id) {
-        todos = todos.map((todo) =>
-          todo.id === Number(id)
-            ? { ...todo, completed: !todo.completed }
-            : todo
-        );
-        render();
-      }
-
-      function editTodo(id) {
-        const newTitle = prompt(
-          "Edit your task:",
-          todos.find((todo) => todo.id === id).title
-        );
-        if (newTitle !== null && newTitle.trim() !== "") {
-          todos = todos.map((todo) =>
-            todo.id === id ? { ...todo, title: newTitle } : todo
-          );
-          render();
-        }
-      }
-
-      function render() {
-        const todosDiv = document.querySelector(".todos");
-        todosDiv.innerHTML = "";
-
-        todos.map((todo) => {
-          const div = document.createElement("div");
-          div.className = `list-group-item todo-item ${
-            todo.completed ? "completed" : ""
-          }`;
-
-          const titleSpan = document.createElement("span");
-          titleSpan.className = "todo-title";
-          titleSpan.innerHTML = todo.title;
-
-          const completeBtn = document.createElement("button");
-          completeBtn.className = "btn btn-success btn-sm me-2";
-          completeBtn.innerHTML = todo.completed ? "Unmark" : "Complete";
-          completeBtn.setAttribute("onclick", `toggleComplete(${todo.id})`);
-
-          const editBtn = document.createElement("button");
-          editBtn.className = "btn btn-warning btn-sm me-2";
-          editBtn.innerHTML = "Edit";
-          editBtn.setAttribute("onclick", `editTodo(${todo.id})`);
-
-          const deleteBtn = document.createElement("button");
-          deleteBtn.className = "btn btn-danger btn-sm";
-          deleteBtn.innerHTML = "Delete";
-          deleteBtn.setAttribute("onclick", `deleteTodo(${todo.id})`);
-
-          div.appendChild(titleSpan);
-          div.appendChild(completeBtn);
-          div.appendChild(editBtn);
-          div.appendChild(deleteBtn);
-          todosDiv.appendChild(div);
-        });
-      }
-    </script>
-  </body>
 </html>

@@ -1,0 +1,19 @@
+.container {
+  max-width: 900px;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todo-title {
+  flex-grow: 1;
+  margin-right: 15px;
+}
